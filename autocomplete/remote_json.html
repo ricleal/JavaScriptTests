@@ -7,16 +7,12 @@
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <!-- Javascript -->
     <script>
-    // $(function() {
-    //     $("#automplete1").autocomplete({
-    //         // source: $.getValues("/autocomplete/data.json")
-    //         source: function(request, response) {
-    //             response = $.getValues("/autocomplete/data.json");
 
-    //         }
-    //     });
-    // });
-
+    /*
+    Function called only once!
+    It populates the autocomplete from a remote json.
+    The filtering is made locally has source is a local variable :)
+    */
 
     $(function() {
         $.ajax({
@@ -28,68 +24,11 @@
                 console.log(data);
                 $('#automplete1').autocomplete({
                     source: data,
-
                 });
             }
         })
     });
 
-    jQuery.extend({
-        getValues: function(url) {
-            var result = null;
-            $.ajax({
-                url: url,
-                type: 'get',
-                dataType: 'json',
-                async: true,
-                success: function(data) {
-                    result = data;
-                    // Not needed:
-                    // console.log(data);
-                    // result = $.map(data, function(item) {
-                    //     console.log(item.value + " - " + item.label);
-                    //     return {
-                    //         label: item.label,
-                    //         value: item.value
-                    //     };
-                    // });
-                    console.log(result);
-
-                },
-                error: function() {
-                    alert('error!');
-                }
-            });
-            return result;
-        }
-    });
-
-    // $(function() {
-    //     /*Selects all long inputs, i.e., the runs
-    //     TODO: the forms that we add jobs are not done yet*/
-    //     $("#automplete1").autocomplete({
-    //         source: function(request, response) {
-    //             $.ajax({
-    //                 url: "/autocomplete/data.json",
-    //                 dataType: "json",
-    //                 // data: {
-    //                 // },
-    //                 success: function(data) {
-    //                     console.log(data);
-    //                     response(data);
-    //                 }
-    //                 error: function(data) {
-    //                     console.log("Error " + data)
-    //                 }
-    //             });
-    //             console.log(request);
-
-
-    //         },
-    //         minLength: 1,
-    //     });
-
-    // });
     </script>
 </head>
 
@@ -98,7 +37,7 @@
 
     <div class="ui-widget">
         <p>Type a number:</p>
-        <label for="automplete1"> Needed? </label>
+        <!--label for="automplete1"> Needed? </label-->
         <input id="automplete1">
     </div>
 
