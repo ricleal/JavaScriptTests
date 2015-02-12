@@ -9,7 +9,6 @@
     <style>
         .ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}   
     </style>
-
     <!-- Javascript -->
     <script>
 
@@ -20,21 +19,26 @@
     */
 
     $(function() {
-        $.ajax({
-            url: "/autocomplete/data.json",
-            type: 'get',
-            dataType: 'json',
-            async: true,
-            success: function(data) {
-                console.log(data);
-                $('#automplete1').autocomplete({
-                    source: data,
-                });
-            }
-        })
+        var jsonurl = "/autocomplete/data.json";
+        var selector = '#automplete1';
+        if  ($(selector).is('*')) {
+            $.ajax({
+                url: jsonurl,
+                type: 'get',
+                dataType: 'json',
+                async: true,
+                success: function(data) {
+                    //console.log(data);
+                    $(selector).autocomplete({
+                        source: data,
+                    });
+                }
+            })
+        }
     });
 
     </script>
+
 </head>
 
 <body>
@@ -44,6 +48,12 @@
         <p>Type a number:</p>
         <!--label for="automplete1"> Needed? </label-->
         <input id="automplete1">
+    </div>
+
+    <div class="ui-widget">
+        <p>No autocomplete!:</p>
+        <!--label for="automplete1"> Needed? </label-->
+        <input id="automplete2">
     </div>
 
 </body>
