@@ -11,10 +11,10 @@
 
     var selector ="#dialog-confirm";
     var text_list = [
-     {'name' : "Single", 'desc' : "A <b>single</b> reduction, which will create a reduction job only for this run.", 
-      "href" : "test_post.html", "post" : [{"name":"Single reduction"}, {"ipts" : "IPTS-1234"}] },
-     {'name' : "Batch", 'desc' : "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.", 
-      "href" : "test_post.html", "post" : [{"name":"Batch reduction"}, {"ipts" : "IPTS-5617"}] } ];
+     {"name" : "Single", 'desc' : "A <b>single</b> reduction, which will create a reduction job only for this run.", 
+      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name", "data_file" : "datafile-1234"}] },
+     {"name" : "Batch", 'desc' : "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.", 
+      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name2", "data_file" : "datafile-5678"}] } ];
 
 
     var button_list = new Array();
@@ -27,7 +27,7 @@
           click: function () {
             //window.location.href = "" + entry['href'] + "";
             console.log(entry['post']);
-            $.post( entry['href'], JSON.stringify(entry['post']));
+            $.post( entry['href'], JSON.stringify(entry['post']), dataType="json"  );
             $( this ).dialog( "close" );  },
         });
     });
