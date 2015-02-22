@@ -1,17 +1,33 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>jQuery UI Dialog - Modal confirmation</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
- 
-</head>
-<body>
- 
-<h1>Testing</h1>
 
- 
+<head>
+    <meta charset="utf-8">
+    <title>jQuery UI Dialog - Modal confirmation</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#hide").click(function() {
+            $("p").hide();
+        });
+        $("#show").click(function() {
+            $("p").show();
+        });
+    });
+    </script>
+</head>
+
+<body>
+
+    <h1>Testing forward by the post request.... </h1>
+
+
+    <p>If you click on the "Hide" button, I will disappear.</p>
+
+    <button id="hide">Hide</button>
+    <button id="show">Show</button>
 </body>
+
 </html>

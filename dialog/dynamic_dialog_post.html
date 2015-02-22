@@ -1,66 +1,91 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>jQuery UI Dialog - Modal confirmation</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-  <script>
-  $(function() {
+    <meta charset="utf-8">
+    <title>jQuery UI Dialog - Modal confirmation</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script>
+    $(function() {
 
-    var selector ="#dialog-confirm";
-    var text_list = [
-     {"name" : "Single", 'desc' : "A <b>single</b> reduction, which will create a reduction job only for this run.", 
-      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name", "data_file" : "datafile-1234"}] },
-     {"name" : "Batch", 'desc' : "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.", 
-      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name2", "data_file" : "datafile-5678"}] } ];
+        var selector = "#dialog-confirm";
+        var text_list = [{
+            "name": "Single",
+            'desc': "A <b>single</b> reduction, which will create a reduction job only for this run.",
+            "href": "test_post.html",
+            "post": [{
+                "reduction_name": "Reduction for expt_name",
+                "data_file": "datafile-1234"
+            }]
+        }, {
+            "name": "Batch",
+            'desc': "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.",
+            "href": "test_post.html",
+            "post": [{
+                "reduction_name": "Reduction for expt_name2",
+                "data_file": "datafile-5678"
+            }]
+        }];
 
 
-    var button_list = new Array();
-    text_list.forEach(function(entry) {
-        console.log(entry);
-        $(selector+" dl").append('<dt>' + entry['name'] + '</dt><dd>'+ entry['desc'] + '</dd>');
+        var button_list = new Array();
+        text_list.forEach(function(entry) {
+            console.log(entry);
+            $(selector + " dl").append('<dt>' + entry['name'] + '</dt><dd>' + entry['desc'] + '</dd>');
+
+            button_list.push({
+                text: entry['name'],
+                click: function() {
+                    //window.location.href = "" + entry['href'] + "";
+                    console.log(entry['post']);
+                    $.post(entry['href'],
+                            JSON.stringify(entry['post']),
+                            dataType = "json")
+                        .done(function(data) {
+                            history.pushState({
+                                path: entry['href']
+                            }, '', entry['href']);
+                            document.open();
+                            document.write(data);
+                            document.close();
+
+                        });
+
+                    $(this).dialog("close");
+                },
+            });
+        });
 
         button_list.push({
-          text: entry['name'],
-          click: function () {
-            //window.location.href = "" + entry['href'] + "";
-            console.log(entry['post']);
-            $.post( entry['href'], JSON.stringify(entry['post']), dataType="json"  );
-            $( this ).dialog( "close" );  },
+            text: "Cancel",
+            click: function() {
+                $(this).dialog("close");
+            }
+        });
+
+        $(selector).dialog({
+            resizable: false,
+            modal: true,
+            buttons: button_list,
         });
     });
-
-    button_list.push({
-          text: "Cancel",
-          click: function() { $( this ).dialog( "close" ); }
-        });
-
-    $(selector).dialog({
-        resizable: false,
-        modal: true,
-        buttons: button_list,
-      });
-
-
-    
-
-  });
-  </script>
+    </script>
 </head>
+
 <body>
- 
-<h1>Testing a dialog post</h1>
 
-<div id="dialog-confirm" class="reduction_dialog" title="Create a new reduction?">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-  You may create a new reduction for this run using</p>
+    <h1>Testing a dialog post...</h1>
 
-  <dl>
-    
-  </dl>
-</div>
- 
+    <div id="dialog-confirm" class="reduction_dialog" title="Create a new reduction?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span> You may create a new reduction for this run using</p>
+
+        <dl>
+
+        </dl>
+    </div>
+
 </body>
+
 </html>
