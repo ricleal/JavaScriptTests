@@ -1,16 +1,6 @@
 #!/usr/bin/python
 
 """
-Save this file as server.py
->>> python server.py 0.0.0.0 8001
-serving on 0.0.0.0:8001
-
-or simply
-
->>> python server.py
-Serving on localhost:8000
-
-You can use this to test GET and POST methods.
 
 """
 
@@ -19,45 +9,51 @@ import SocketServer
 import logging
 import cgi
 
+# Debug level
 import sys
-
-
-if len(sys.argv) > 2:
-    PORT = int(sys.argv[2])
-    I = sys.argv[1]
-elif len(sys.argv) > 1:
-    PORT = int(sys.argv[1])
-    I = ""
-else:
-    PORT = 8000
-    I = ""
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     def do_GET(self):
-        logging.warning("======= GET STARTED =======")
-        logging.warning(self.headers)
+        logging.info("============ GET STARTED ==========")
+        logging.debug("*********** Headers **************")
+        logging.debug(self.headers)
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
-        logging.warning("======= POST STARTED =======")
-        logging.warning(self.headers)
-        logging.warning("======= POST VALUES =======")
+        logging.info("============ POST STARTED ==========")
+        logging.debug("*********** Headers **************")
+        logging.debug(self.headers)
+        logging.debug("*********** Post Content **************")
         length = int(self.headers.getheader('content-length'))
         data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
-        for i in data:
-            print i
 
-
-
-        logging.warning("\n")
+        logging.debug("%s\n"%data)
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 
-Handler = ServerHandler
 
-httpd = SocketServer.TCPServer(("", PORT), Handler)
 
-print "@rochacbruno Python http server version 0.1 (for testing purposes only)"
-print "Serving at: http://%(interface)s:%(port)s" % dict(interface=I or "localhost", port=PORT)
-httpd.serve_forever()
+class MyTCPServer(SocketServer.TCPServer):
+    """
+    Server that makes sure the socket closes down when
+    Ctrl+C is hit 
+    """
+    allow_reuse_address = True
+
+if __name__ == '__main__':
+    if len(sys.argv) > 2:
+        PORT = int(sys.argv[2])
+        HOST = sys.argv[1]
+    elif len(sys.argv) > 1:
+        PORT = int(sys.argv[1])
+        HOST = ""
+    else:
+        PORT = 8000
+        HOST = ""
+
+    Handler = ServerHandler
+    httpd = MyTCPServer((HOST, PORT), Handler)
+    print "Serving at: http://%(interface)s:%(port)s" % dict(interface=HOST or "localhost", port=PORT)
+    httpd.serve_forever()
