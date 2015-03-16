@@ -47,14 +47,26 @@
                 $(selector + " dl").append('<dt>' + entry['name'] + '</dt><dd>' + entry['desc'] + '</dd>');
 
                 button_list.push({
-                    text: entry['name'],
-                    click: function() {
-                        //window.location.href = "" + entry['href'] + "";
-                        console.log(entry['post']);
-                        $.post(entry['href'], JSON.stringify(entry['post']), dataType = "json");
-                        $(this).dialog("close");
-                    },
-                });
+                text: entry['name'],
+                click: function() {
+                    //window.location.href = "" + entry['href'] + "";
+                    console.log(entry['post']);
+                    $.post(entry['href'],
+                            JSON.stringify(entry['post']),
+                            dataType = "json")
+                        .done(function(data) {
+                            history.pushState({
+                                path: entry['href']
+                            }, '', entry['href']);
+                            document.open();
+                            document.write(data);
+                            document.close();
+
+                        });
+
+                    $(this).dialog("close");
+                },
+            });
             });
 
             button_list.push({
