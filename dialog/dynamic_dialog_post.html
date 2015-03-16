@@ -1,66 +1,118 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>jQuery UI Dialog - Modal confirmation</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-  <script>
-  $(function() {
-
-    var selector ="#dialog-confirm";
-    var text_list = [
-     {"name" : "Single", 'desc' : "A <b>single</b> reduction, which will create a reduction job only for this run.", 
-      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name", "data_file" : "datafile-1234"}] },
-     {"name" : "Batch", 'desc' : "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.", 
-      "href" : "test_post.html", "post" : [{"reduction_name" : "Reduction for expt_name2", "data_file" : "datafile-5678"}] } ];
-
-
-    var button_list = new Array();
-    text_list.forEach(function(entry) {
-        console.log(entry);
-        $(selector+" dl").append('<dt>' + entry['name'] + '</dt><dd>'+ entry['desc'] + '</dd>');
-
-        button_list.push({
-          text: entry['name'],
-          click: function () {
-            //window.location.href = "" + entry['href'] + "";
-            console.log(entry['post']);
-            $.post( entry['href'], JSON.stringify(entry['post']), dataType="json"  );
-            $( this ).dialog( "close" );  },
-        });
-    });
-
-    button_list.push({
-          text: "Cancel",
-          click: function() { $( this ).dialog( "close" ); }
-        });
-
-    $(selector).dialog({
-        resizable: false,
-        modal: true,
-        buttons: button_list,
-      });
+    <meta charset="utf-8">
+    <title>jQuery UI Dialog - Modal confirmation</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script>
+        //$(function() {
+        function submit_job() {
+            console.log("submit_job");
+            var run = 1234;
+            var selector = "#dialog-confirm";
+            var text_list = [{
+                "name": "Single ${run}",
+                'desc': "A <b>single</b> reduction, which will create a reduction job only for this run.",
+                "href": "test_post.html",
+                "post": [{
+                    "reduction_name": "Reduction for expt_name",
+                    "data_file": "datafile-1234"
+                }]
+            }, {
+                "name": "Batch",
+                'desc': "A reduction <b>batch</b>, which will create a configuration that you can use with multiple runs.",
+                "href": "test_post.html",
+                "post": [{
+                    "reduction_name": "Reduction for expt_name2",
+                    "data_file": "datafile-5678"
+                }]
+            }, {
+                "name": "Random",
+                'desc': "A reduction <b>Random</b>, which will create a Random configuration.",
+                "href": "test_post.html",
+                "post": [{
+                    "reduction_name": "Reduction for expt_name3",
+                    "data_file": "datafile-562323"
+                }]
+            }, ];
 
 
-    
+            var button_list = new Array();
+            $(selector + " dl").empty();
+            text_list.forEach(function(entry) {
+                console.log(entry);
+                $(selector + " dl").append('<dt>' + entry['name'] + '</dt><dd>' + entry['desc'] + '</dd>');
 
-  });
-  </script>
+                button_list.push({
+                    text: entry['name'],
+                    click: function() {
+                        //window.location.href = "" + entry['href'] + "";
+                        console.log(entry['post']);
+                        $.post(entry['href'], JSON.stringify(entry['post']), dataType = "json");
+                        $(this).dialog("close");
+                    },
+                });
+            });
+
+            button_list.push({
+                text: "Cancel",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            });
+
+            $(selector).dialog({
+                resizable: false,
+                modal: true,
+                buttons: button_list,
+            });
+
+        //});
+        };
+  $(function() { $("#dialog-confirm").hide(); });
+    </script>
 </head>
+
 <body>
- 
-<h1>Testing a dialog post</h1>
 
-<div id="dialog-confirm" class="reduction_dialog" title="Create a new reduction?">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-  You may create a new reduction for this run using</p>
+    <h1>Testing a dialog post</h1>
 
-  <dl>
-    
-  </dl>
-</div>
+    <div id="dialog-confirm" class="reduction_dialog" title="Create a new reduction?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span> You may create a new reduction for this run using</p>
+
+        <dl>
+
+        </dl>
+    </div>
  
+ <p>
+ <a class="gear" title="Click to reduce this run" href="javascript:void(0);" 
+        onClick="submit_job();">Click Here for the dialog!</a>
+</p>
+        
+<pre>
+<script>
+document.writeln("Hello World!");
+document.writeln("Have a nice day!");
+var a = 5;
+var b = 10;
+document.writeln(`Fifteen is ${a + b}.`);
+
+function postdata(){
+    $.post("test_post.html", { id: "1", next_id: "2" },
+       function(data) {
+         document.open();
+         document.write(data);
+         document.close();
+       });
+}
+</script>
+</pre>
+<a href="javascript:void(0);"  onClick="postdata()">postdata</a>
+
 </body>
+
 </html>

@@ -18,19 +18,21 @@ import SimpleHTTPServer
 import SocketServer
 import logging
 import cgi
-
+import argparse
 import sys
 
 
-if len(sys.argv) > 2:
-    PORT = int(sys.argv[2])
-    I = sys.argv[1]
-elif len(sys.argv) > 1:
-    PORT = int(sys.argv[1])
-    I = ""
-else:
-    PORT = 8000
-    I = ""
+import argparse
+
+
+def set_command_line_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--verbose', '-v', action='store_true', help='verbose flag', default=False)
+    parser.add_argument('--host', '-n', action='store', help='host name', default="localhost")
+    parser.add_argument('--port', '-p', action='store', help='port', type=int, default=8000)
+    params = parser.parse_args()
+    return params
+
 
 
 class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
@@ -54,10 +56,16 @@ class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         logging.warning("\n")
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 
-Handler = ServerHandler
+def main():
+    params = set_command_line_arguments();
 
-httpd = SocketServer.TCPServer(("", PORT), Handler)
+    Handler = ServerHandler
+    httpd = SocketServer.TCPServer((params.host, params.port), Handler)
+    logging.info("Serving at: http://%s:%d" %(params.host, params.port) )
+    httpd.serve_forever()
+    
+    
+    
 
-print "@rochacbruno Python http server version 0.1 (for testing purposes only)"
-print "Serving at: http://%(interface)s:%(port)s" % dict(interface=I or "localhost", port=PORT)
-httpd.serve_forever()
+if __name__ == "__main__":
+    main()
