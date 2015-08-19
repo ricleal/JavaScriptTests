@@ -93,7 +93,10 @@
                 </ul> -->
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Sign In <strong class="caret"></strong></a>
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Sign In
+                            <strong class="caret"></strong>
+                        </a>
                         <div class="dropdown-menu" style="padding: 15px; ">
                             <form action="[YOUR ACTION]" method="post" accept-charset="UTF-8">
                                 <input id="user_username" style="margin-bottom: 15px;" type="text" name="user[username]" />
@@ -194,7 +197,34 @@
         </div>
     </div>
 
-<hr/>
+
+    <div class="container ">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#myModal">
+            Launch modal dialog!
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
 
     <!-- grid -->
     <div class="container">
@@ -267,11 +297,9 @@
                                 </div>
                                 <div id="menu3" class="tab-pane fade">
                                     <h3>Menu 3</h3>
-                                    <p> Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                                        Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                                        Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                                        Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                                        Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                                    <p> Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Eaque ipsa quae ab
+                                        illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Eaque ipsa quae ab illo inventore
+                                        veritatis et quasi architecto beatae vitae dicta sunt explicabo.
                                     </p>
                                 </div>
                             </div>
@@ -279,13 +307,13 @@
                             <hr/>
                             <div class="form-group" style="margin-top: 15px;">
                                 <div class="col-xs-9 col-xs-offset-2">
-                                    <button type="button" class="btn btn-lg btn-default">Default</button>
-                                    <button type="button" class="btn btn-lg btn-primary">Primary</button>
-                                    <button type="button" class="btn btn-lg btn-success">Success</button>
-                                    <button type="button" class="btn btn-lg btn-info">Info</button>
-                                    <button type="button" class="btn btn-lg btn-warning">Warning</button>
-                                    <button type="button" class="btn btn-lg btn-danger">Danger</button>
-                                    <button type="button" class="btn btn-lg btn-link">Link</button>
+                                    <button type="button" class="btn btn-default">Default</button>
+                                    <button type="button" class="btn btn-primary">Primary</button>
+                                    <button type="button" class="btn btn-success">Success</button>
+                                    <button type="button" class="btn btn-info">Info</button>
+                                    <button type="button" class="btn btn-warning">Warning</button>
+                                    <button type="button" class="btn btn-danger">Danger</button>
+                                    <button type="button" class="btn btn-link">Link</button>
                                 </div>
                             </div>
                         </form>
