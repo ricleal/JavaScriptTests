@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+	<meta charset=utf-8 />
+	<title>Example Table</title>
+</head>
+
+<body>
+
+	<div class="container" style="width: 600px; margin: auto;">
+		<table id="mytable" class="display" width="100%"></table>
+	</div>
+</body>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="//datatables.net/download/build/nightly/jquery.dataTables.js"></script>
+<script>
+
+var dataSet = [
+    [ "MantidPlot", "ApplicationWindow.cpp", 10.2],
+    [ "MantidPlot", "ApplicationWindow1.cpp", 7.2],
+    [ "MantidPlot", "ApplicationWindow2.cpp", 6.2],
+    [ "MantidPlot", "ApplicationWindow3.cpp", 5.2],
+    [ "MantidPlot", "ApplicationWindow4.cpp", 4], 	
+    [ "MantidPlot", "Algo1.cpp", 4],
+    [ "MantidPlot", "Algo2.cpp", 3.1],
+    [ "MantidPlot", "Algo3.cpp", 5.4],
+    [ "MantidPlot", "Algo4.cpp", 8],
+    [ "MantidPlot", "Algo5.cpp", 10],
+    [ "MantidPlot", "Algo6.cpp", 39],
+    [ "MantidPlot", "Algo7.cpp", 1.2]
+];
+ 
+$(document).ready(function() {
+    $('#mytable').DataTable( {
+        data: dataSet,
+        columns: [
+            { title: "Module" },
+            { title: "File" },
+            { title: "Time" }
+        ],
+        "columnDefs": [
+        	// center last collumn
+    		{ className: "dt-body-center", "targets": [ 2 ] }
+  		],
+  		"lengthMenu" : [ [ 20, 50, 100, -1 ], [ 20, 50, 100, "All" ] ],
+		"order": [[ 2, 'desc' ]], //default sort
+		"paging" : true,
+		"lengthChange" : true,
+		"searching" : true,
+		"ordering" : true,
+		"info" : true,
+		"autoWidth" : true
+    } );
+} );
+
+</script>
+</html>
