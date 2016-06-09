@@ -8,7 +8,7 @@
     <title>Example side bar</title>
     <style>
         #wrapper {
-            padding-left: 0;
+            padding-right: 0;
             -webkit-transition: all 0.5s ease;
             -moz-transition: all 0.5s ease;
             -o-transition: all 0.5s ease;
@@ -16,22 +16,22 @@
         }
 
         #wrapper.toggled {
-            padding-left: 250px;
+            padding-right: 250px;
         }
 
         #sidebar-wrapper {
             z-index: 1000;
             position: fixed;
-            left: 250px;
+            right: 250px;
             width: 0;
             height: 100%;
-            margin-left: -250px;
+            margin-right: -250px;
             overflow-y: auto;
             -webkit-transition: all 0.5s ease;
             -moz-transition: all 0.5s ease;
             -o-transition: all 0.5s ease;
             transition: all 0.5s ease;
-            border-right: solid;
+            border-left: solid;
         }
 
         #wrapper.toggled #sidebar-wrapper {
@@ -51,10 +51,10 @@
 
         @media(min-width:768px) {
             #wrapper {
-                padding-left: 250px;
+                padding-right: 250px;
             }
             #wrapper.toggled {
-                padding-left: 0;
+                padding-right: 0;
             }
             #sidebar-wrapper {
                 width: 250px;
@@ -95,19 +95,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td  id="run_xpto_1_Iq.txt" draggable="true" ondragstart="drag(event)" >run_xpto_1_Iq.txt</td>
+                            <td  id="run_xpto_1_Iq.txt" draggable="true" ondragstart="drag(event)" ><span class="label label-default">run_xpto_1_Iq.txt</span></td>
                             <td>
                                 <input type="radio" name="radio_fit">
                             </td>
                         </tr>
                         <tr>
-                            <td  id="run_xpto_2_Iq.txt" draggable="true" ondragstart="drag(event)" >run_xpto_2_Iq.txt</td>
+                            <td  id="run_xpto_2_Iq.txt" draggable="true" ondragstart="drag(event)" ><span class="label label-default">run_xpto_2_Iq.txt</span></td>
                             <td>
                                 <input type="radio" name="radio_fit">
                             </td>
                         </tr>
                         <tr>
-                            <td  id="run_xpto_3_Iq.txt" draggable="true" ondragstart="drag(event)" >run_xpto_3_Iq.txt</td>
+                            <td  id="run_xpto_3_Iq.txt" draggable="true" ondragstart="drag(event)" ><span class="label label-default">run_xpto_3_Iq.txt</span></td>
                             <td>
                                 <input type="radio" name="radio_fit">
                             </td>
@@ -124,7 +124,7 @@
         <!-- Page Content -->
 
         <div id="page-content-wrapper">
-          <a href="#menu-toggle" class="btn btn-default" id="menu-toggle" data-toggle="tooltip" data-placement="right" title="Click to toggle the file list sidebar.">
+          <a href="#menu-toggle" class="btn btn-default pull-right" id="menu-toggle" data-toggle="tooltip" data-placement="right" title="Click to toggle the file list sidebar.">
             <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></a>
 
             <div class="container-fluid">
