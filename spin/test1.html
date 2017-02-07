@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>spin.js</title>
+    <style>
+        .spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+
+    <script type="text/javascript">
+        var opts = {
+            lines: 11, // The number of lines to draw
+            length: 15, // The length of each line
+            width: 10, // The line thickness
+            radius: 30, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#000', // #rgb or #rrggbb
+            speed: 0.6, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: 'auto', // Top position relative to parent in px
+            left: 'auto' // Left position relative to parent in px
+        };
+
+        function sleep(delay) {
+            var start = new Date().getTime();
+            while (new Date().getTime() < start + delay);
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id='spinner' class='spinner'></div>
+
+    <script type="text/javascript">
+        var spinner_div = $('#spinner').get(0);
+        var spinner = new Spinner(opts).spin(spinner_div);
+    </script>
+
+
+    <div id="log">Initial content</div>
+
+    <script language="javascript" type="text/javascript">
+        <!--
+
+        var myArray = new Array();
+        myArray[0] = 1;
+        myArray[1] = 2.218;
+        myArray[2] = 33;
+        myArray[3] = 114.94;
+        myArray[4] = 5;
+        myArray[5] = 33;
+        myArray[6] = 114.980;
+        myArray[7] = 5;
+
+        document.getElementById('log').innerHTML += "<table align='center'><tr><td >Col Head 1</td>";
+        document.getElementById('log').innerHTML += "<td>Col Head 2</td>";
+        document.getElementById('log').innerHTML += "<td>Col Head 3</td></tr>";
+
+        document.getElementById('log').innerHTML += "<tr><td style='width: 100px;                   '>---------------</td>";
+        document.getElementById('log').innerHTML += "<td     style='width: 100px; text-align: right;'>---------------</td>";
+        document.getElementById('log').innerHTML += "<td     style='width: 100px; text-align: right;'>---------------</td></tr>";
+
+        for (var i = 0; i < 8; i++) {
+            document.getElementById('log').innerHTML += "<tr><td style='width: 100px;'>Number " + i + " is:</td>";
+            document.getElementById('log').innerHTML[i] = myArray[i].toFixed(3);
+            document.getElementById('log').innerHTML += "<td style='width: 100px; text-align: right;'>" + myArray[i] + "</td>";
+            document.getElementById('log').innerHTML += "<td style='width: 100px; text-align: right;'>" + myArray[i] + "</td></tr>";
+            sleep(500);
+        }
+        document.getElementById('log').innerHTML += "</table>";
+        //-->
+    </script>
+
+
+
+
+
+</body>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        spinner.stop(spinner_div);
+    });
+</script>
+
+</html>
