@@ -24,7 +24,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">ICat</div>
                     <div class="panel-body">
-                        <table id="mytable" class="display table" width="100%">
+                        <table id="mytable" class="display table table-striped table-hover" cellspacing="0" width="100%">
                         </table>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 var titles = api.column(0);
                 var types = api.column(1);
 
-                var select = $('<select><option value=""></option></select>')
+                var select = $('<select class="form-control"><option value=""></option></select>')
                     .appendTo($(titles.header()).empty())
                     .on('change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(
