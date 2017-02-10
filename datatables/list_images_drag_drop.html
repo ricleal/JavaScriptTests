@@ -134,12 +134,16 @@
                 types.data().unique().sort().each(function (d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
-                set_tooltip_as_image();
+                //set_tooltip_as_image();
 
                 $(this.fnGetNodes()).draggable({
                     revert: 'invalid',
                     helper: 'clone'
                 });
+            },
+            "fnDrawCallback": function (oSettings) {
+                // When table is redrawn!! E.g. page changes
+                set_tooltip_as_image();
             }
         })
     });
