@@ -21,7 +21,7 @@ var y = x.map(function(el) {
     };
     y_value = y_compiled.eval(scope);
     // Add some error on Y
-    return y_value + Math.sqrt(y_value) * Math.random();
+    return y_value + Math.sqrt(y_value) * 2 * Math.random();
 });
 console.log('y =', y);
 
@@ -30,16 +30,36 @@ console.log('y =', y);
  * 
  */
 
-// import library 
 const LM = require('ml-levenberg-marquardt');
  
 // function that receives the parameters and returns 
 // a function with the independent variable as a parameter 
-function poly (a, b, c) {
-  return (x) => (a + b*x + c*x*x);
+
+// 2 options:
+// either as simple function
+function poly(a, b, c) {
+    console.log(arguments);
+    // Same as:
+    //return function(x){ console.log(a,b,c,x); return (a + b*x + c*x*x) }
+    return (x) => (a + b*x + c*x*x);
 }
+// or using mathjs
+function poly_text(a,b,c){
+    var f_text = "a + b*x + c*x*x";
+    var f_parsed = math.parse(f_text);
+    var f_compiled = f_parsed.compile();
+    return function(x) {
+        scope = {
+            a:a,
+            b:b,
+            c:c,
+            x:x
+        }
+        return f_compiled.eval(scope);
+    }
+};
  
-// array of initial parameter values 
+// array of initial parameter values for: a,b,c
 var initialValues = [1,1,1];
  
 const options = {
@@ -63,6 +83,8 @@ var poly_func = poly.apply(this, fitted_params.parameterValues);
 var y_fitted = x.map(function(el) {
     return poly_func(el);
 });
+
+console.log('y_fitted =', y_fitted);
 
 /**
  * Plotting
