@@ -23,11 +23,13 @@ var math = require('mathjs');
 const LM = require('ml-levenberg-marquardt');
 
 // This is typed by the user in any valid format
+equation_to_fit_string = "10 + a + b*x + c*x^2"
 
-equation_to_fit_string = "a + b*x + c*x^2"
-
+// Parse the string. We might need some validation here
 var n_parsed = math.parse(equation_to_fit_string);
 
+// here I'm getting all variables to fit and remove x!
+// May be the validation goes here
 var nodes_to_fit = n_parsed.filter(function(node) {
   return node.isSymbolNode && node.name != 'x';
 });
@@ -40,9 +42,13 @@ parameter_names_to_fit = nodes_to_fit.map(function(node) {
 
 console.log("parameter_names_to_fit:", parameter_names_to_fit);
 
+// need to compile before evaluating
 n_compiled = n_parsed.compile();
 
-
+// fitting function
+// Needs to be written like this because we have no idea
+// What are the arguments that we getting
+// Note that it returns a function that allows to vary x!
 var fit_function = new Function(parameter_names_to_fit,
     'var scope = {};\
     for (i = 0; i < arguments.length; i++) {\
@@ -56,8 +62,9 @@ var fit_function = new Function(parameter_names_to_fit,
 
  
 // array of initial parameter values for initial paramters to fit: all at 1
-var initialValues = parameter_names_to_fit.map(function (x, i) { return 1.1; });
- 
+var initialValues = parameter_names_to_fit.map(function (x, i) { return 1.0; });
+
+// LM options. We might need to adapt some of these values
 const options = {
     damping: 1.5,
     initialValues: initialValues,
@@ -67,6 +74,7 @@ const options = {
 };
 
 // array of points to fit 
+// Those are the points that we whant to fit!
 var data = {
     x: x,
     y: y
@@ -76,6 +84,7 @@ var data = {
 var fitted_params = LM(data, fit_function, options);
 
 // Get's the fitted function from the fitted parameters
+// only coefficients are set! Remember it returns a function!)
 var fit_function_fitted = fit_function.apply(this, fitted_params.parameterValues);
 
 var y_fitted = x.map(function(el) {
@@ -86,7 +95,8 @@ console.log('y_fitted =', y_fitted);
 
 /**
  * Plotting
- * 
+ * Plotly in node sucks. it sends the plot to a remote location.
+ * Need to find something for debugging....
  */
 
 var plotly = require('plotly')("ricleal", "uHg9cPUbVrbMCG1C6eJU");
