@@ -22,6 +22,8 @@ console.log('y =', y);
 var math = require('mathjs');
 const LM = require('ml-levenberg-marquardt');
 
+// This is typed by the user in any valid format
+
 equation_to_fit_string = "a + b*x + c*x^2"
 
 var n_parsed = math.parse(equation_to_fit_string);
@@ -30,7 +32,7 @@ var nodes_to_fit = n_parsed.filter(function(node) {
   return node.isSymbolNode && node.name != 'x';
 });
 
-var parameter_names_to_fit = nodes_to_fit.map(function(node) {
+parameter_names_to_fit = nodes_to_fit.map(function(node) {
    return node.name;
 });
 
@@ -38,14 +40,13 @@ console.log("parameter_names_to_fit:", parameter_names_to_fit);
 
 var n_compiled = n_parsed.compile();
 
-// TODO:
-// Needs arguments here! Otherwise doesn't work!!!!
-
 // fit function with arbitrary number of parameters
-function fit_function(){
-    console.log(arguments);
+fit_function = function fit_function(){
+    console.log("fit_function arguments:", arguments);
+    
     if (arguments.length != parameter_names_to_fit.length){
-        throw "arguments.length != parameter_names_to_fit.length";
+        //throw "arguments.length != parameter_names_to_fit.length";
+        arguments = arguments[0];
     }
     var scope = {}
     for (i = 0; i < arguments.length; i++) {
@@ -58,6 +59,13 @@ function fit_function(){
         return n_compiled.eval(scope);
     }
 };
+
+// TODO:
+// Needs arguments here! Otherwise doesn't work!!!!
+
+var fit_function_signature = new Function(parameter_names_to_fit,
+    'console.log("fit_function_signature arguments.length =", arguments.length); return fit_function(arguments);');
+
 
  
 // array of initial parameter values for initial paramters to fit: all at 1
@@ -77,8 +85,10 @@ var data = {
     y: y
 };
 
-var fitted_params = LM(data, fit_function, options);
+// Fitting
+var fitted_params = LM(data, fit_function_signature, options);
 
+// Get's the fitted function from the fitted parameters
 var fit_function_fitted = fit_function.apply(this, fitted_params.parameterValues);
 
 var y_fitted = x.map(function(el) {
