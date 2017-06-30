@@ -32,40 +32,27 @@ var nodes_to_fit = n_parsed.filter(function(node) {
   return node.isSymbolNode && node.name != 'x';
 });
 
+
+// If those are defined as var, node scope gets nuts
 parameter_names_to_fit = nodes_to_fit.map(function(node) {
    return node.name;
 });
 
 console.log("parameter_names_to_fit:", parameter_names_to_fit);
 
-var n_compiled = n_parsed.compile();
+n_compiled = n_parsed.compile();
 
-// fit function with arbitrary number of parameters
-fit_function = function fit_function(){
-    console.log("fit_function arguments:", arguments);
-    
-    if (arguments.length != parameter_names_to_fit.length){
-        //throw "arguments.length != parameter_names_to_fit.length";
-        arguments = arguments[0];
-    }
-    var scope = {}
-    for (i = 0; i < arguments.length; i++) {
-        scope[parameter_names_to_fit[i]] = arguments[i];
-    }
 
-    return function(x) {
-        scope['x']=x;
-        //console.log(scope);
-        return n_compiled.eval(scope);
-    }
-};
-
-// TODO:
-// Needs arguments here! Otherwise doesn't work!!!!
-
-var fit_function_signature = new Function(parameter_names_to_fit,
-    'console.log("fit_function_signature arguments.length =", arguments.length); return fit_function(arguments);');
-
+var fit_function = new Function(parameter_names_to_fit,
+    'var scope = {};\
+    for (i = 0; i < arguments.length; i++) {\
+        scope[parameter_names_to_fit[i]] = arguments[i];\
+    }\
+    return function(x) {\
+        scope.x=x;\
+        return n_compiled.eval(scope);\
+    }'
+);
 
  
 // array of initial parameter values for initial paramters to fit: all at 1
@@ -86,7 +73,7 @@ var data = {
 };
 
 // Fitting
-var fitted_params = LM(data, fit_function_signature, options);
+var fitted_params = LM(data, fit_function, options);
 
 // Get's the fitted function from the fitted parameters
 var fit_function_fitted = fit_function.apply(this, fitted_params.parameterValues);
