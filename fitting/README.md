@@ -1,17 +1,21 @@
-#
+# NodeJS Tests
 
-Run in `nodejs` command line:
+JavaScript tests.
+
+All files run in `nodejs` command line.
 
 ## Install
 
 ```
 # npm install --save-dev git+https://github.com/rfink/polyfit.js.git
-npm install --save-dev mathjs
-npm install --save-dev ml-levenberg-marquardt
+npm install --save-dev\
+ mathjs\
+ ml-levenberg-marquardt\
+ plotly
 ```
 
 ## Run
 
 ```
-nodejs
+nodejs test_minimization_with_variable_parameters.js
 ```

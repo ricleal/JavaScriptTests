@@ -19,7 +19,7 @@ console.log('y =', y);
  * 
  */
 
-var math = require('mathjs');
+const math = require('mathjs');
 const LM = require('ml-levenberg-marquardt');
 
 // This is typed by the user in any valid format
@@ -69,7 +69,7 @@ const options = {
     damping: 1.5,
     initialValues: initialValues,
     gradientDifference: 10e-2,
-    maxIterations: 100,
+    maxIterations: 200,
     errorTolerance: 10e-3
 };
 
@@ -82,7 +82,13 @@ var data = {
 
 // Fitting
 var fitted_params = LM(data, fit_function, options);
-
+console.log("---- Fitted Parameters ---")
+for (i = 0; i < parameter_names_to_fit.length; i++) {
+    console.log(parameter_names_to_fit[i], "=", fitted_params.parameterValues[i])
+}
+console.log("Error =", fitted_params.parameterError)
+console.log("Iterations =", fitted_params.iterations)
+console.log("--------------------------")
 // Get's the fitted function from the fitted parameters
 // only coefficients are set! Remember it returns a function!)
 var fit_function_fitted = fit_function.apply(this, fitted_params.parameterValues);
