@@ -25,17 +25,23 @@ const LM = require('ml-levenberg-marquardt');
 // This is typed by the user in any valid format
 equation_to_fit_string = "10 + a + b*x + c*x^2"
 
+// Mathjs works like this:
+//math.parse("x^2").compile().eval({x:2})
+// returns: 4
+
 // Parse the string. We might need some validation here
 var n_parsed = math.parse(equation_to_fit_string);
 
+// Coefficients as nodes
 // here I'm getting all variables to fit and remove x!
 // May be the validation goes here
 var nodes_to_fit = n_parsed.filter(function(node) {
   return node.isSymbolNode && node.name != 'x';
 });
 
-
-// If those are defined as var, node scope gets nuts
+// Coefficients as strings
+// Let's transform the nodes into an array of string
+// If those are defined as 'var', node scope gets nuts
 parameter_names_to_fit = nodes_to_fit.map(function(node) {
    return node.name;
 });
