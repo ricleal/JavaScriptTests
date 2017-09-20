@@ -149,7 +149,7 @@ const LM = require('ml-levenberg-marquardt');
 
 // Fitting/minimization function
 function func(k) {
-   return (y) => (k*y);
+   return (y) => (y + k);
 }
 
 // array of initial parameter values for: a
@@ -175,7 +175,7 @@ var k = fitted_params.parameterValues[0];
 console.log("** Scaling value: K =", k)
 
 var yNonBaseScaled = yNonBase.map(function(el) {
-   return (el*k);
+   return (el + k);
 });
 
 console.log('yNonBaseScaled =', yNonBaseScaled);
