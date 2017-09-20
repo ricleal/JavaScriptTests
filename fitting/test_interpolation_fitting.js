@@ -1,6 +1,10 @@
 /*
 
 npm install --save-dev everpolate
+
+Plot is here:
+https://plot.ly/~ricleal/18/base-non-base-non-base-interpolated-non-base-scaled-final/
+
 */
 
 var selection = {
@@ -109,9 +113,11 @@ var nonBase = selection['brush-0'].D2O_w_Iq;
 var xBase = base.map(function(el) {
     return el.x;
 });
-
 var yBase = base.map(function(el) {
     return el.y;
+});
+var eBase = base.map(function(el) {
+    return el.e;
 });
 
 var xNonBase = nonBase.map(function(el) {
@@ -120,10 +126,13 @@ var xNonBase = nonBase.map(function(el) {
 var yNonBase = nonBase.map(function(el) {
     return el.y;
 });
+var eNonBase = nonBase.map(function(el) {
+    return el.e;
+});
 
 // Interpolation
-var polynomial = require('everpolate').polynomial
-var yNonBaseInterpolated = polynomial(xBase, xNonBase, yNonBase)
+var linear = require('everpolate').linear
+var yNonBaseInterpolated = linear(xBase, xNonBase, yNonBase)
 
 console.log("** Original Non base x,y values:")
 console.log("x = ", xNonBase);
@@ -171,6 +180,31 @@ var yNonBaseScaled = yNonBase.map(function(el) {
 
 console.log('yNonBaseScaled =', yNonBaseScaled);
 
+////
+// Final curve:
+// Concatenate and sort the arrays
+xFinal = xBase.concat(xNonBase);
+yFinal = yBase.concat(yNonBaseScaled);
+eFinal = eBase.concat(eNonBase);
+
+//1) combine the arrays:
+var list = [];
+for (var j = 0; j < xFinal.length; j++) 
+    list.push({'x': xFinal[j], 'y': yFinal[j], 'e': eFinal[j]});
+
+//2) sort:
+list.sort(function(a, b) {
+    return ((a.x < b.x) ? -1 : ((a.x == b.x) ? 0 : 1));
+});
+
+//3) separate them back out:
+for (var k = 0; k < list.length; k++) {
+    xFinal[k] = list[k].x;
+    yFinal[k] = list[k].y;
+    eFinal[k] = list[k].e;
+}
+
+
 /**
 * Plotting
 * 
@@ -183,7 +217,7 @@ var trace1 = {
    y: yBase,
    type: "scatter",
    mode: 'lines+markers',
-   name: 'base'
+   name: 'base',
 };
 
 var trace2 = {
@@ -212,7 +246,28 @@ var trace3 = {
     marker: {symbol: "cross"}
  };
 
-var data_to_plot = [trace1, trace2, trace3, trace4];
+ var trace5 = {
+    x: xFinal,
+    y: yFinal,
+    error_y: {
+        type: 'data',
+        array: eFinal,
+        visible: true
+    },
+    type: "scatter",
+    mode: 'lines+markers',
+    name: 'final',
+    line: {
+        width: 4,
+        dash:'dot'
+    },
+    marker: {
+        symbol: "circle-open",
+        size: 7
+    }
+ };
+
+var data_to_plot = [trace1, trace2, trace3, trace4, trace5];
 
 var graphOptions = {filename: "plot", fileopt: "overwrite"};
 plotly.plot(data_to_plot, graphOptions, function (err, msg) {
