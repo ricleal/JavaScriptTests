@@ -1,14 +1,19 @@
 /*
 
 Test gaussian without calculating the initial guess
+
 */
+
+
 var LM = require('ml-levenberg-marquardt');
+var d3 = require('d3');
 
 function gaussian(A, center, fwhm) {
   return (x) =>
              (A * Math.exp(-4 * Math.log(2) * (x - center)**2 / fwhm**2));
 }
 
+// this date is an ideal gaussian
 var data = {
   x : [
     0.,          0.18644068,  0.37288136,  0.55932203,  0.74576271,  0.93220339,
@@ -48,3 +53,4 @@ const options = {
 
 var ans = LM(data, gaussian, options);
 console.log(ans);
+
