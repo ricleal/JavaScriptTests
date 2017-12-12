@@ -1,5 +1,9 @@
 /*
 
+This is a prototype for SANS Stitching.
+- It interpolates the non base from the X values in base
+- Finds a constant that brings down the non base to base.
+
 npm install --save-dev everpolate
 
 Plot is here:
