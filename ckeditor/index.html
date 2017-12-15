@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CKEditor</title>
+        <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+	</head>
+	<body>
+        <h1>Notebook example</h1>
+		<textarea name="editor1"></textarea>
+		<script>
+			CKEDITOR.replace('editor1');
+        </script>
+        <br/>
+        <button onclick="showEditor()">Show me</button>
+        <br/>
+        <hr/>
+        <xmp id='output'></xmp>
+        <hr/>
+    </body>
+    
+    <script>
+        function showEditor() {
+            var value = CKEDITOR.instances['editor1'].getData()
+            console.log(value);
+            var output = document.getElementById('output');
+            output.innerHTML = value;            
+        }
+    </script>
+
+</html>
