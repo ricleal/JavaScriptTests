@@ -11,6 +11,7 @@ All files run in `nodejs` command line.
 npm install --save-dev\
  mathjs\
  ml-levenberg-marquardt\
+ ml-regression-base\
  plotly
 ```
 
