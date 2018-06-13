@@ -1,4 +1,5 @@
-var levenbergMarquardt = require('ml-levenberg-marquardt');
+//var levenbergMarquardt = require('ml-levenberg-marquardt');
+import LM from 'ml-levenberg-marquardt';
 
 function linearFit(m, b) { return (t) => (m * t + b); }
 
@@ -19,14 +20,15 @@ var data = {
 };
 
 const options = {
-  damping : 0.01,
-  initialValues : [ 1, 3 ],
+  damping : 1.5,
+  initialValues : [ -4, 1 ],
   gradientDifference : 10e-2,
   maxIterations : 100,
   errorTolerance : 10e-3
 };
 
-var result = levenbergMarquardt(data, linearFit, options);
+var result = LM(data, linearFit, options);
+console.log(result)
 
 /**
  * Return the correlation coefficient of determination (r) and chi-square.
