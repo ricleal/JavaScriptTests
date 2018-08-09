@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <div class="jumbotron text-center">
+        <h1>Upload text file</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Select file</h3>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="files">
+                    <label class="custom-file-label" for="files">Choose file</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h3>Upload it</h3>
+                <button id="upload" type="button" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+                <div class="col-sm-12">
+                        <p><br/><button type="button" class="btn btn-primary" onclick="plot()">Plot</button></p>
+                        <p>v Plot will be here! v</p>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <svg id="visualization" width="800" height="600"></svg>            
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    The content of the file will show here:
+                </p>
+                <pre id="rawtext" class="pre-scrollable"></pre>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        var fileInput = $('#files');
+        var uploadButton = $('#upload');
+
+        var plotData = [];
+
+        uploadButton.on('click', function () {
+            var input = fileInput.get(0);
+            // Create a reader object
+            var reader = new FileReader();
+            if (input.files.length) {
+                var textFile = input.files[0];
+                reader.readAsText(textFile);
+                $(reader).on('load', processFile);
+            } else {
+                alert('Please upload a file before continuing')
+            }
+        });
+
+        function processFile(e) {
+            var file = e.target.result,
+                results;
+            if (file && file.length) {
+
+                fileContent = parseLineByLine(file);
+                //$('#rawtext').val(file);
+                $('#rawtext').append(fileContent);
+
+            }
+        }
+
+        function parseLineByLine(file) {
+            console.log("Called!!!");
+            var lines = file.split('\n');
+            
+            header = null;
+            data = [];
+            for (var line = 0; line < lines.length; line++) {
+                thisLine = lines[line];
+
+                if (thisLine.startsWith("#   Pt.") ){
+                    header = thisLine;
+                }
+                else if (thisLine.startsWith("#")){
+
+                }
+                else {
+                    data.push(thisLine);
+                }
+
+            }
+            // headers processing
+            header = header.split(/\s+/);
+            header = header.slice(1); //remove #
+            
+            // split rows content
+            rows = []
+            data.forEach(function(line) {
+                lineSplitted = line.split(/\s+/);
+                lineSplitted = lineSplitted.slice(1); // get rid of the first space
+                rows.push(lineSplitted);
+            });
+
+
+            
+            /*
+                // Format that D3 reads
+
+                var final = [
+                    {
+                        "2theta": [.... ],
+                        "anode1": [....]
+                    },
+                    {
+                        "2theta": [.... ],
+                        "anode2": [....]
+                    },
+
+
+                ]
+            */
+
+            var final = [];
+            
+            // Create the final array with object property names but empty arrays
+            // So later we can push to those arrays:
+            // [{ anode* : [], 2theta: [] }, .... ]
+            header.forEach(function(h){
+                if (h.startsWith("anode")){
+                    // variable needs to be in [] otherwise js thinks it's a key name!
+                    final.push(
+                        {
+                            [h]: [],
+                            "2theta": []
+                        }
+                    );
+                }
+            });
+
+            // iterate rows
+            rows.forEach(function(row){
+                // i = index of element in a row
+                for(i = 0; i < row.length; i++){
+                    // header title for the row in i index
+                    var anodeName = header[i];
+
+                    // if we are in an anode
+                    if (anodeName.startsWith("anode")){
+
+                        // anode value
+                        rowValue=row[i]
+
+                        // we know from the headers list, that 2theta is index 1
+                        twoThetaIndex = 1
+                        // get the value of 2theta
+                        twoThetaValue=row[twoThetaIndex]
+
+                        // let's iterate the array with empty objects and let's 
+                        // add the values above
+                        // f is an object in the array
+                        final.forEach(function(f){
+                            //  if the anode name that we are in, it's in the list of objects
+                            //  push the data
+                            if (anodeName in f){
+                                f["2theta"].push(twoThetaValue);
+                                f[anodeName].push(rowValue);
+                            }
+                        });
+
+                    }
+
+                }
+            });
+            
+            plotData = final;
+            return JSON.stringify(final, undefined, 4);
+            
+        }
+
+        function plot(){
+            if (plotData.length <= 0){
+                alert("Array emply");
+            } 
+            else {
+
+                var element = document.getElementById("visualization");
+                var vis = d3.select("svg");
+                var margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                };
+                var width = 800 - margin.left - margin.right;
+                var height = 600 - margin.top - margin.bottom;
+
+
+                var data = plotData;
+                console.log(data);
+
+                data.forEach(function(o){
+                    console.log(Object.keys(o));
+                })
+
+            }
+        }
+    </script>
+</body>
+
+</html>
